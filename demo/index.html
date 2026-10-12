@@ -16,6 +16,10 @@
     --card-line: rgba(218,218,218,.4);
     --warm: #ffb46b;
     --bg: #0b1222;
+    --app-bg: #eceef1;
+    --app-ink: #0b1222;
+    --app-ink-dim: rgba(11,18,34,.6);
+    --app-line: rgba(11,18,34,.12);
     --sans: Inter, system-ui, sans-serif;
     --serif: "Instrument Serif", Georgia, serif;
     /* one design pixel: the Figma frame is 1690 wide */
@@ -114,6 +118,10 @@
   .tune output{ color:var(--ink); font-variant-numeric:tabular-nums; }
   .tune .row{ display:flex; gap:8px; }
   .chip{ padding:8px 12px; border-radius:999px; border:1px solid var(--line); background:var(--veil); }
+  /* on the light grey app page, the demo controls go dark on light */
+  body.mode-app .switch{ background:rgba(11,18,34,.05); border-color:var(--app-line); backdrop-filter:none; }
+  body.mode-app .switch button{ color:var(--app-ink-dim); }
+  body.mode-app .switch button[aria-pressed="true"]{ background:var(--app-ink); color:#fff; }
   /* demo chrome sits under the site header once the screen gets narrow */
   @media (max-width: 1100px){ body:not(.mode-app) .bar{ top:72px; } body:not(.mode-app) .tune{ top:150px; } }
   @media (max-width: 600px){
@@ -122,12 +130,12 @@
   }
 
   /* ---- app (phone): the same language as the landing reveal ---- */
-  .app{ position:fixed; inset:0; display:none; place-items:center; background:radial-gradient(80% 60% at 50% 40%, #18233d, #070b16); }
+  .app{ position:fixed; inset:0; display:none; place-items:center; background:var(--app-bg); }
   body.mode-app .app{ display:grid; }
   body.mode-app .stage{ display:none; }
   .phone{
     position:relative; height:min(844px, calc(100dvh - 120px)); aspect-ratio:390 / 844;
-    border-radius:52px; overflow:hidden; box-shadow:0 0 0 10px #111622, 0 0 0 11px #2a3248, 0 40px 120px rgba(0,0,0,.6);
+    border-radius:52px; overflow:hidden; box-shadow:0 0 0 10px #111622, 0 0 0 11px #2a3248, 0 30px 80px rgba(16,24,40,.22), 0 8px 24px rgba(16,24,40,.12);
   }
   .phone fogged-glass{ position:absolute; inset:0; width:100%; height:100%; }
   .status{ position:absolute; top:16px; left:0; right:0; display:flex; justify-content:space-between; padding:0 30px; font-size:14px; font-weight:600; pointer-events:none; }
