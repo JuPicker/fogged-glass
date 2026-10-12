@@ -114,7 +114,15 @@
   .tune{ position:fixed; top:58px; left:50%; transform:translateX(-50%); width:min(280px, calc(100vw - 32px)); padding:14px; border-radius:16px; background:rgba(10,16,30,.72); backdrop-filter:blur(12px); border:1px solid var(--line); display:none; gap:12px; z-index:5; font-size:12px; }
   .tune.open{ display:grid; }
   .tune label{ display:grid; grid-template-columns:1fr auto; gap:6px 10px; align-items:center; color:var(--ink-dim); }
-  .tune input{ grid-column:1 / -1; width:100%; accent-color:var(--warm); }
+  /* sliders in the landing's language: white on a thin rail, like its text and underlines */
+  .tune input[type="range"]{ grid-column:1 / -1; width:100%; height:18px; margin:0; background:transparent; -webkit-appearance:none; appearance:none; cursor:pointer; }
+  .tune input[type="range"]::-webkit-slider-runnable-track{ height:2px; border-radius:2px;
+    background:linear-gradient(var(--ink), var(--ink)) 0 / var(--fill, 50%) 100% no-repeat, rgba(255,255,255,.2); }
+  .tune input[type="range"]::-webkit-slider-thumb{ -webkit-appearance:none; width:14px; height:14px; margin-top:-6px; border-radius:50%; background:var(--ink); box-shadow:0 1px 4px rgba(0,0,0,.35); }
+  .tune input[type="range"]::-moz-range-track{ height:2px; border-radius:2px; background:rgba(255,255,255,.2); }
+  .tune input[type="range"]::-moz-range-progress{ height:2px; border-radius:2px; background:var(--ink); }
+  .tune input[type="range"]::-moz-range-thumb{ width:14px; height:14px; border:0; border-radius:50%; background:var(--ink); box-shadow:0 1px 4px rgba(0,0,0,.35); }
+  .tune input[type="range"]:focus-visible{ outline:2px solid var(--ink); outline-offset:4px; border-radius:4px; }
   .tune output{ color:var(--ink); font-variant-numeric:tabular-nums; }
   .tune .row{ display:flex; gap:8px; }
   .chip{ padding:8px 12px; border-radius:999px; border:1px solid var(--line); background:var(--veil); }
@@ -399,9 +407,24 @@
   });
   // Tune, Fog up, Clear and the F key act on the view on screen: the landing or the phone
   const inApp = () => document.body.classList.contains("mode-app");
+  // the filled part of each rail follows its value
+  const fill = (input) => input.style.setProperty("--fill", `${((input.value - input.min) / (input.max - input.min)) * 100}%`);
+  // the panel shows the settings of the view on screen
+  const DEFAULTS = { refog: "14", brush: "24", drops: "1", thickness: "0.92", lens: "2.4" };
+  const syncTune = () => {
+    const el = inApp() ? phone : glass;
+    document.querySelectorAll('.tune input[type="range"]').forEach((input) => {
+      input.value = el.dataset[input.name] ?? DEFAULTS[input.name];
+      document.querySelector(`output[data-for="${input.name}"]`).textContent = input.value;
+      fill(input);
+    });
+  };
+  syncTune();
+  document.querySelectorAll("[data-mode]").forEach((b) => b.addEventListener("click", syncTune));
   $("tune").addEventListener("input", (e) => {
     const { name, value } = e.target;
     if (!name) return;
+    fill(e.target);
     (inApp() ? phone : glass).dataset[name] = value;
     document.querySelector(`output[data-for="${name}"]`).textContent = value;
   });
