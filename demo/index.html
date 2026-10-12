@@ -250,7 +250,7 @@
   </section>
 
 <script>
-  // flags: ?ui=0 (clean, for screen recordings) &hint=0 &app &scene=hills|day|city|night
+  // flags: ?ui=0 (clean, for screen recordings; press F to fog up again) &hint=0 &app &scene=hills|day|city|night
   //        &still (poster instead of video) &dpr=2
   (() => {
     const q = new URLSearchParams(location.search);
@@ -397,14 +397,26 @@
     $("tuneBtn").setAttribute("aria-expanded", String(open));
     $("tuneBtn").setAttribute("aria-pressed", String(open));
   });
+  // Tune, Fog up, Clear and the F key act on the view on screen: the landing or the phone
+  const inApp = () => document.body.classList.contains("mode-app");
   $("tune").addEventListener("input", (e) => {
     const { name, value } = e.target;
     if (!name) return;
-    glass.dataset[name] = value;
+    (inApp() ? phone : glass).dataset[name] = value;
     document.querySelector(`output[data-for="${name}"]`).textContent = value;
   });
-  $("fogBtn").addEventListener("click", () => { resetLanding(); glass.fogUp(2.5); });
-  $("clearBtn").addEventListener("click", reveal);
+  const fogAgain = () => {
+    if (inApp()) { resetPhone(); phone.fogUp(2.5); }
+    else { resetLanding(); glass.fogUp(2.5); }
+  };
+  $("fogBtn").addEventListener("click", fogAgain);
+  $("clearBtn").addEventListener("click", () => (inApp() ? unlock() : reveal()));
+  // F: fog the glass up again, handy between takes when the controls are hidden (?ui=0)
+  addEventListener("keydown", (e) => {
+    if (e.key.toLowerCase() !== "f" || e.metaKey || e.ctrlKey || e.altKey || e.repeat) return;
+    if (e.target instanceof HTMLInputElement) return;
+    fogAgain();
+  });
 </script>
 </body>
 </html>

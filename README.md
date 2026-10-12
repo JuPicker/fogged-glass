@@ -130,7 +130,7 @@ A wrapper is in [`examples/react/FoggedGlass.tsx`](examples/react/FoggedGlass.ts
 
 ## Demo
 
-[`demo/index.html`](demo/index.html) is the full demo from picker.studio: the "Seven" landing page and the app screen, four views (hills, mountain day, city bus, mountain night) and a Tune panel. Serve the folder over http (ES modules don't load from `file://`), then open `/demo/`. Add `?ui=0` for a clean screen recording.
+[`demo/index.html`](demo/index.html) is the full demo from picker.studio: the "Seven" landing page and the app screen, four views (hills, mountain day, city bus, mountain night) and a Tune panel. Serve the folder over http (ES modules don't load from `file://`), then open `/demo/`. Add `?ui=0` for a clean screen recording, and press F to fog the glass up again between takes.
 
 The demo footage was generated with [Krea](https://www.krea.ai) for this project.
 
