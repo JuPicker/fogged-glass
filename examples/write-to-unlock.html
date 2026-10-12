@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fogged Glass: write to unlock</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #0b1222; color: #fff; font: 500 15px/1.4 system-ui, sans-serif; }
+  fogged-glass { position: fixed; inset: 0; }
+  .lock { position: fixed; left: 0; right: 0; bottom: 40px; text-align: center; pointer-events: none; transition: opacity .6s; }
+  .lock b { display: block; font-weight: 600; }
+  .welcome { position: fixed; left: 0; right: 0; bottom: 48px; text-align: center; opacity: 0; transition: opacity 1s .5s; }
+  .welcome h1 { margin: 0 0 8px; font-size: 56px; font-weight: 400; }
+  .open .lock { opacity: 0; }
+  .open .welcome { opacity: 1; }
+</style>
+</head>
+<body>
+  <!--
+    data-goal="write": write a word, any word, freehand. When the finger lifts and pauses, the strokes
+    are checked: a word unlocks; a swipe, a circle or a scrub over the whole glass does not.
+    It is a shape test, not handwriting recognition: any word goes.
+  -->
+  <fogged-glass id="glass" data-src="../demo/hills.mp4" data-poster="../demo/hills.jpg"
+    data-focus="0.72,0.55" data-goal="write" data-brush="15" data-refog="24"></fogged-glass>
+
+  <div class="lock"><b>Say hi to the glass</b><span id="hint">Write a word, any word</span></div>
+  <div class="welcome"><h1>Welcome back.</h1></div>
+
+  <script type="module">
+    import "../fogged-glass.js";
+    const glass = document.getElementById("glass");
+    const NUDGE = {
+      small: "A little bigger, so the glass can read it",
+      big: "That's a lot of glass. Just a word will do",
+      simple: "Almost. Try a real word, like hey",
+    };
+    glass.addEventListener("fogwrite", (e) => {
+      if (!e.detail.ok) document.getElementById("hint").textContent = NUDGE[e.detail.reason];
+    });
+    glass.addEventListener("fogreveal", () => {
+      glass.clearAll(1.4);
+      document.body.classList.add("open");
+      navigator.vibrate?.(18);
+    });
+  </script>
+</body>
+</html>

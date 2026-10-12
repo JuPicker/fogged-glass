@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fogged Glass: find and reveal</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #0b1222; color: #fff; font: 500 16px/1.4 system-ui, sans-serif; }
+  fogged-glass { position: fixed; inset: 0; }
+  .hint { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); margin: 0; padding: 10px 16px;
+          border-radius: 999px; background: rgba(10, 16, 30, .35); pointer-events: none; transition: opacity .6s; }
+  .page { position: fixed; left: 48px; bottom: 48px; opacity: 0; transition: opacity 1s .5s; pointer-events: none; }
+  .page h1 { margin: 0; font-size: clamp(48px, 9vw, 140px); line-height: 1; font-weight: 400; }
+  .revealed .hint { opacity: 0; }
+  .revealed .page { opacity: 1; }
+</style>
+</head>
+<body>
+  <!--
+    data-target: the thing to find, as a rect in MEDIA coordinates (x, y, w, h, 0 to 1, y down),
+    so it follows the crop on any screen. The reveal fires once data-threshold of it is wiped.
+  -->
+  <fogged-glass id="glass"
+    data-src="../demo/hills.mp4" data-poster="../demo/hills.jpg"
+    data-focus="0.62,0.5"
+    data-target="0.675,0.565,0.095,0.11" data-threshold="0.5"></fogged-glass>
+
+  <p class="hint">There's a little house out there. Wipe the glass to find it.</p>
+  <section class="page"><h1>There you are.</h1></section>
+
+  <script type="module">
+    import "../fogged-glass.js";
+    const glass = document.getElementById("glass");
+    glass.addEventListener("fogreveal", () => {
+      glass.clearAll(1.8);                      // the fog evaporates and stays gone
+      document.body.classList.add("revealed");
+    });
+  </script>
+</body>
+</html>

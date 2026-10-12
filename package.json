@@ -1,0 +1,38 @@
+{
+  "name": "fogged-glass",
+  "version": "1.0.0",
+  "description": "A fogged-up window you wipe with your finger: drops run from your strokes, the glass fogs back up. A WebGL2 custom element, no dependency.",
+  "type": "module",
+  "main": "fogged-glass.js",
+  "module": "fogged-glass.js",
+  "types": "fogged-glass.d.ts",
+  "jsdelivr": "fogged-glass.js",
+  "unpkg": "fogged-glass.js",
+  "files": [
+    "fogged-glass.js",
+    "fogged-glass.d.ts",
+    "LICENSE",
+    "README.md"
+  ],
+  "keywords": [
+    "webgl",
+    "webgl2",
+    "shader",
+    "fog",
+    "condensation",
+    "window",
+    "rain",
+    "drops",
+    "custom-element",
+    "web-component",
+    "landing-page",
+    "vanilla-js"
+  ],
+  "author": "Julien Picker (https://picker.studio)",
+  "homepage": "https://picker.studio/tools/fogged-glass",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JuPicker/fogged-glass.git"
+  },
+  "license": "MIT"
+}
